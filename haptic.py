@@ -1,28 +1,39 @@
 from evdev import ecodes, ff, InputDevice, util
+from psychopy.hardware import joystick
 
-class HapticDevice():
+class HapticDevice( joystick.Joystick, InputDevice ):
     """Manage calibration and use of a haptic device.
     
     Attributes:
-      device (evdev.InputDevice) the input device in use
+      _device (evdev.InputDevice) the input device in use
       strongMagnitude (hexadecimal) vibration strength for the strong motor
       weakMAgnitude (hexadecimal) vibration strength for the weak motor
     """
-    device = None
+    _device = None
+    _filename = '/dev/null'
     strongMagnitude = 0x0000
     weakMagnitude   = 0xfff0
 
-    def __init__( self, dev = None):
-        # Use specified device if available
-        if dev:
-            self.device = dev
-            return
+    def __init__( self, id_ = 0, dev = None ):
+        # Initiate joystick.Joystick
+        joystick.Joystick.__init__( self, id_ )
 
-        # Find first haptic device if none specified
-        for name in util.list_devices():
-            dev = InputDevice( name )
-            if ecodes.EV_FF in dev.capabilities():
-                self.device = dev
+        if dev:
+            # Close the parent device and replace
+            #  it with the specified device
+            self._device.close() # From joystick.Joystick
+            devices = joystick.pyglet_input.get_inputs() # Assumes we're using pyglet
+            devMatch = [ d for d in devices if d.device._filename == dev ]
+            if len(devMatch) > 1:
+                raise ValueError( f'Multiple devices found for {dev}' )
+            elif len(devMatch) == 0:
+                raise ValueError( f'No device found at {dev}' )
+            self.id = devices.index(devMatch[0])
+            self._device = devMatch[0]
+            self.name = self._device.device.name
+        
+        self._filename = self._device.device._filename
+        InputDevice.__init__(self, self._filename)
 
     def calibrate( self, sMag = 0x0000, wMag = 0xfff0 ):
         """Interactive calibration of vibration strength
@@ -36,7 +47,7 @@ class HapticDevice():
             raise ValueError('Rumble cannot be zero')
         self.__setEffect( sMag, wMag )
         self.rumble()
-        for event in self.device.read_loop():
+        for event in self.read_loop():
             if event.type == ecodes.EV_KEY:
                 if event.code == 304 and event.value == 1:
                     self.strongMagnitude = sMag
@@ -52,13 +63,13 @@ class HapticDevice():
         Keyword arguments:
             repeat (int) How long the device should rumble for, in seconds
         """
-        effect_id = self.device.upload_effect( self.effect )
-        self.device.write( ecodes.EV_FF, effect_id, repeat )
+        effect_id = self.upload_effect( self.effect )
+        self.write( ecodes.EV_FF, effect_id, repeat )
         self.effect_id = effect_id
 
     def __setEffect( self, sMag, wMag, duration = 1000 ):
         try:
-            self.device.erase_effect( self.effect_id )
+            self.erase_effect( self.effect_id )
         except AttributeError:
             pass
 
