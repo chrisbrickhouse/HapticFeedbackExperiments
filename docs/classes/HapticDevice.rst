@@ -1,0 +1,5 @@
+HapticDevice
+============
+
+.. automodule:: haptic
+   :members:
