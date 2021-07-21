@@ -9,8 +9,6 @@ class HapticDevice( joystick.Joystick, InputDevice ):
       strongMagnitude (hexadecimal) vibration strength for the strong motor
       weakMAgnitude (hexadecimal) vibration strength for the weak motor
     """
-    _device = None
-    _filename = '/dev/null'
     strongMagnitude = 0x0000
     weakMagnitude   = 0xfff0
 
@@ -30,12 +28,13 @@ class HapticDevice( joystick.Joystick, InputDevice ):
                 raise ValueError( f'No device found at {dev}' )
             self.id = devices.index(devMatch[0])
             self._device = devMatch[0]
+            self._device.open()
             self.name = self._device.device.name
         
         self._filename = self._device.device._filename
         InputDevice.__init__(self, self._filename)
 
-    def calibrate( self, sMag = 0x0000, wMag = 0xfff0 ):
+    def calibrateRumble( self, sMag = 0x0000, wMag = 0xfff0 ):
         """Interactive calibration of vibration strength
 
         The vibration strength starts at wMag and ticks
@@ -57,17 +56,40 @@ class HapticDevice( joystick.Joystick, InputDevice ):
                     self.calibrate( sMag, wMag - 0x0f00 )
                     break
 
+    def calibrateStick( self, win ):
+        """Move stick, release, then press West"""
+
+        while True:
+            stickPos = tuple(joystick.Joystick.getAllAxes(self))
+            if self.getAllButtons()[3] == True:
+                print(stickPos)
+                self.offset = stickPos
+                break
+            win.flip()
+
+    def getAllAxes( self ):
+        try:
+            return subtract(joystick.Joystick.getAllAxes( self ), self.offset)
+        except:
+            return joystick.Joystick.getAllAxes( self )
+
+    def getHat( self, n ):
+        return self.getAllHats()[n]
+
     def rumble( self, repeat = 1 ):
         """Cause the device to rumble.
 
         Keyword arguments:
             repeat (int) How long the device should rumble for, in seconds
         """
-        effect_id = self.upload_effect( self.effect )
-        self.write( ecodes.EV_FF, effect_id, repeat )
-        self.effect_id = effect_id
+        try:
+            self.write( ecodes.EV_FF, self.effect_id, repeat )
+        except AttributeError:
+            effect_id = self.upload_effect( self.effect )
+            self.effect_id = effect_id
+            self.rumble()
 
-    def __setEffect( self, sMag, wMag, duration = 1000 ):
+    def __setEffect( self, sMag, wMag, duration = 100 ):
         try:
             self.erase_effect( self.effect_id )
         except AttributeError:
