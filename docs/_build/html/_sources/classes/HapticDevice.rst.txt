@@ -1,5 +1,0 @@
-haptic
-======
-
-.. automodule:: haptic
-   :members:
