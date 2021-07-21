@@ -1,0 +1,14 @@
+repos:
+  - repo: https://github.com/psf/black
+    rev: 21.7b0
+    hooks:
+      - id: black
+        types: [ python ]
+  - repo: local
+    hooks:
+      - id: build-docs
+        name: build-docs
+        entry: sphinx-build -b html docs docs/_build
+        language: system
+        always_run: true
+        pass_filenames: false
