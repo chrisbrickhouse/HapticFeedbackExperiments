@@ -1,3 +1,6 @@
 env
+dev
 __pycache__
 *.swp
+*.orig
+*-mwe.py
