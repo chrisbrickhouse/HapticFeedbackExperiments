@@ -1,0 +1,534 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>HapticDevice &#8212; Haptic feedback experiments 0.0.3 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Documentation for HapticFeedback experiments!" href="../index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-haptic">
+<span id="hapticdevice"></span><h1>HapticDevice<a class="headerlink" href="#module-haptic" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="haptic.HapticDevice">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">haptic.</span></span><span class="sig-name descname"><span class="pre">HapticDevice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id_</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dev</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Manage calibration and use of a haptic device.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="haptic.HapticDevice._device">
+<span class="sig-name descname"><span class="pre">_device</span></span><a class="headerlink" href="#haptic.HapticDevice._device" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>evdev.InputDevice</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="haptic.HapticDevice.strongMagnitude">
+<span class="sig-name descname"><span class="pre">strongMagnitude</span></span><a class="headerlink" href="#haptic.HapticDevice.strongMagnitude" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>hexadecimal</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="haptic.HapticDevice.weakMAgnitude">
+<span class="sig-name descname"><span class="pre">weakMAgnitude</span></span><a class="headerlink" href="#haptic.HapticDevice.weakMAgnitude" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>hexadecimal</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="haptic.HapticDevice.absinfo">
+<span class="sig-name descname"><span class="pre">absinfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis_num</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.absinfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return current <code class="xref py py-class docutils literal notranslate"><span class="pre">AbsInfo</span></code> for input device axis</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>axis_num</strong> (<em>int</em>) – EV_ABS keycode (example <code class="xref py py-attr docutils literal notranslate"><span class="pre">ecodes.ABS_X</span></code>)</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">device</span><span class="o">.</span><span class="n">absinfo</span><span class="p">(</span><span class="n">ecodes</span><span class="o">.</span><span class="n">ABS_X</span><span class="p">)</span>
+<span class="go">AbsInfo(value=1501, min=-32768, max=32767, fuzz=0, flat=128, resolution=0)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="haptic.HapticDevice.active_keys">
+<span class="sig-name descname"><span class="pre">active_keys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.active_keys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return currently active keys.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">device</span><span class="o">.</span><span class="n">active_keys</span><span class="p">()</span>
+<span class="go">[1, 42]</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">verbose</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>, key codes are resolved to their
+verbose names. Unknown codes are resolved to <code class="docutils literal notranslate"><span class="pre">'?'</span></code>. For
+example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[(</span><span class="s1">&#39;KEY_ESC&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;KEY_LEFTSHIFT&#39;</span><span class="p">,</span> <span class="mi">42</span><span class="p">)]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="haptic.HapticDevice.async_read">
+<span class="sig-name descname"><span class="pre">async_read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.async_read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Asyncio coroutine to read multiple input events from device. Return
+a generator object that yields <code class="xref py py-class docutils literal notranslate"><span class="pre">InputEvent</span></code>
+instances.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="haptic.HapticDevice.async_read_loop">
+<span class="sig-name descname"><span class="pre">async_read_loop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.async_read_loop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an iterator that yields input events. This iterator is
+compatible with the <code class="docutils literal notranslate"><span class="pre">async</span> <span class="pre">for</span></code> syntax.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="haptic.HapticDevice.async_read_one">
+<span class="sig-name descname"><span class="pre">async_read_one</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.async_read_one" title="Permalink to this definition">¶</a></dt>
+<dd><p>Asyncio coroutine to read and return a single input event as
+an instance of <code class="xref py py-class docutils literal notranslate"><span class="pre">InputEvent</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="haptic.HapticDevice.calibrateRumble">
+<span class="sig-name descname"><span class="pre">calibrateRumble</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sMag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wMag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">65520</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.calibrateRumble" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interactive calibration of vibration strength</p>
+<p>The vibration strength starts at wMag and ticks
+down by 0x0f00 until the user presses the south button
+on the controller (e.g., x on dualshock). Pressing
+the east button progresses the calibration.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="haptic.HapticDevice.calibrateStick">
+<span class="sig-name descname"><span class="pre">calibrateStick</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">win</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.calibrateStick" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move stick, release, then press West</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="haptic.HapticDevice.capabilities">
+<span class="sig-name descname"><span class="pre">capabilities</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">absinfo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.capabilities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the event types that this device supports as a mapping of
+supported event types to lists of handled event codes.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">device</span><span class="o">.</span><span class="n">capabilities</span><span class="p">()</span>
+<span class="go">{ 1: [272, 273, 274],</span>
+<span class="go">  2: [0, 1, 6, 8] }</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">verbose</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>, event codes and types will be resolved
+to their names.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span> <span class="p">(</span><span class="s1">&#39;EV_KEY&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="p">[(</span><span class="s1">&#39;BTN_MOUSE&#39;</span><span class="p">,</span> <span class="mi">272</span><span class="p">),</span>
+                  <span class="p">(</span><span class="s1">&#39;BTN_RIGHT&#39;</span><span class="p">,</span> <span class="mi">273</span><span class="p">),</span>
+                  <span class="p">(</span><span class="s1">&#39;BTN_MIDDLE&#39;</span><span class="p">,</span> <span class="mi">273</span><span class="p">)],</span>
+  <span class="p">(</span><span class="s1">&#39;EV_REL&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span> <span class="p">[(</span><span class="s1">&#39;REL_X&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                  <span class="p">(</span><span class="s1">&#39;REL_Y&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+                  <span class="p">(</span><span class="s1">&#39;REL_HWHEEL&#39;</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span>
+                  <span class="p">(</span><span class="s1">&#39;REL_WHEEL&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">)]</span> <span class="p">}</span>
+</pre></div>
+</div>
+<p>Unknown codes or types will be resolved to <code class="docutils literal notranslate"><span class="pre">'?'</span></code>.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">absinfo</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>, the list of capabilities will also
+include absolute axis information in the form of
+<code class="xref py py-class docutils literal notranslate"><span class="pre">AbsInfo</span></code> instances:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span> <span class="mi">3</span><span class="p">:</span> <span class="p">[</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">AbsInfo</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="n">fuzz</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="mi">0</span><span class="p">)),</span>
+       <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">AbsInfo</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="n">fuzz</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="p">]}</span>
+</pre></div>
+</div>
+<p>Combined with <code class="docutils literal notranslate"><span class="pre">verbose</span></code> the above becomes:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span> <span class="p">(</span><span class="s1">&#39;EV_ABS&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span> <span class="p">[</span> <span class="p">((</span><span class="s1">&#39;ABS_X&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">AbsInfo</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="n">fuzz</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="mi">0</span><span class="p">)),</span>
+                   <span class="p">((</span><span class="s1">&#39;ABS_Y&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">AbsInfo</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="n">fuzz</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="p">]}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="haptic.HapticDevice.erase_effect">
+<span class="sig-name descname"><span class="pre">erase_effect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ff_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.erase_effect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Erase a force effect from a force feedback device. This also
+stops the effect.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="haptic.HapticDevice.fileno">
+<span class="sig-name descname"><span class="pre">fileno</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.fileno" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the file descriptor to the open event device. This makes
+it possible to pass instances directly to <code class="xref py py-func docutils literal notranslate"><span class="pre">select.select()</span></code> and
+<code class="xref py py-class docutils literal notranslate"><span class="pre">asyncore.file_dispatcher</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="haptic.HapticDevice.getAllAxes">
+<span class="sig-name descname"><span class="pre">getAllAxes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.getAllAxes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a list of all current axis values.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="haptic.HapticDevice.getAllButtons">
+<span class="sig-name descname"><span class="pre">getAllButtons</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.getAllButtons" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the state of all buttons as a list.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="haptic.HapticDevice.getAllHats">
+<span class="sig-name descname"><span class="pre">getAllHats</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.getAllHats" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the current values of all available hats as a list of tuples.</p>
+<p>Each value is a tuple (x, y) where x and y can be -1, 0, +1</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="haptic.HapticDevice.getAxis">
+<span class="sig-name descname"><span class="pre">getAxis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axisId</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.getAxis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the value of an axis by an integer id.</p>
+<p>(from 0 to number of axes - 1)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="haptic.HapticDevice.getButton">
+<span class="sig-name descname"><span class="pre">getButton</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">buttonId</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.getButton" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the state of a given button.</p>
+<p>buttonId should be a value from 0 to the number of buttons-1</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="haptic.HapticDevice.getHat">
+<span class="sig-name descname"><span class="pre">getHat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.getHat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the position of a particular hat.</p>
+<p>The position returned is an (x, y) tuple where x and y
+can be -1, 0 or +1</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="haptic.HapticDevice.getName">
+<span class="sig-name descname"><span class="pre">getName</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.getName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the manufacturer-defined name describing the device.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="haptic.HapticDevice.getNumAxes">
+<span class="sig-name descname"><span class="pre">getNumAxes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.getNumAxes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of joystick axes found.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="haptic.HapticDevice.getNumButtons">
+<span class="sig-name descname"><span class="pre">getNumButtons</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.getNumButtons" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of digital buttons on the device.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="haptic.HapticDevice.getNumHats">
+<span class="sig-name descname"><span class="pre">getNumHats</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.getNumHats" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the number of hats on this joystick.</p>
+<p>The GLFW backend makes no distinction between hats and buttons. Calling
+‘getNumHats()’ will return 0.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="haptic.HapticDevice.getX">
+<span class="sig-name descname"><span class="pre">getX</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.getX" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the X axis value (equivalent to joystick.getAxis(0)).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="haptic.HapticDevice.getY">
+<span class="sig-name descname"><span class="pre">getY</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.getY" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the Y axis value (equivalent to joystick.getAxis(1)).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="haptic.HapticDevice.getZ">
+<span class="sig-name descname"><span class="pre">getZ</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.getZ" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the Z axis value (equivalent to joystick.getAxis(2)).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="haptic.HapticDevice.grab">
+<span class="sig-name descname"><span class="pre">grab</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.grab" title="Permalink to this definition">¶</a></dt>
+<dd><p>Grab input device using <code class="docutils literal notranslate"><span class="pre">EVIOCGRAB</span></code> - other applications will
+be unable to receive events until the device is released. Only
+one process can hold a <code class="docutils literal notranslate"><span class="pre">EVIOCGRAB</span></code> on a device.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Grabbing an already grabbed device will raise an <code class="docutils literal notranslate"><span class="pre">IOError</span></code>.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="haptic.HapticDevice.grab_context">
+<span class="sig-name descname"><span class="pre">grab_context</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.grab_context" title="Permalink to this definition">¶</a></dt>
+<dd><p>A context manager for the duration of which only the current
+process will be able to receive events from the device.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="haptic.HapticDevice.input_props">
+<span class="sig-name descname"><span class="pre">input_props</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.input_props" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get device properties and quirks.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">device</span><span class="o">.</span><span class="n">input_props</span><span class="p">()</span>
+<span class="go">[0, 5]</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">verbose</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>, input properties are resolved to their
+names. Unknown codes are resolved to <code class="docutils literal notranslate"><span class="pre">'?'</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[(</span><span class="s1">&#39;INPUT_PROP_POINTER&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;INPUT_PROP_POINTING_STICK&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="haptic.HapticDevice.leds">
+<span class="sig-name descname"><span class="pre">leds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.leds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return currently set LED keys.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">device</span><span class="o">.</span><span class="n">leds</span><span class="p">()</span>
+<span class="go">[0, 1, 8, 9]</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">verbose</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>, event codes are resolved to their
+names. Unknown codes are resolved to <code class="docutils literal notranslate"><span class="pre">'?'</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[(</span><span class="s1">&#39;LED_NUML&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;LED_CAPSL&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;LED_MISC&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;LED_MAIL&#39;</span><span class="p">,</span> <span class="mi">9</span><span class="p">)]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="haptic.HapticDevice.need_write">
+<span class="sig-name descname"><span class="pre">need_write</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.need_write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorator that raises <code class="xref py py-class docutils literal notranslate"><span class="pre">EvdevError</span></code> if there is no write access to the
+input device.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="haptic.HapticDevice.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read multiple input events from device. Return a generator object that
+yields <code class="xref py py-class docutils literal notranslate"><span class="pre">InputEvent</span></code> instances. Raises
+<cite>BlockingIOError</cite> if there are no available events at the moment.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="haptic.HapticDevice.read_loop">
+<span class="sig-name descname"><span class="pre">read_loop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.read_loop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enter an endless <code class="xref py py-func docutils literal notranslate"><span class="pre">select.select()</span></code> loop that yields input events.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="haptic.HapticDevice.read_one">
+<span class="sig-name descname"><span class="pre">read_one</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.read_one" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read and return a single input event as an instance of
+<code class="xref py py-class docutils literal notranslate"><span class="pre">InputEvent</span></code>.</p>
+<p>Return <code class="docutils literal notranslate"><span class="pre">None</span></code> if there are no pending input events.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="haptic.HapticDevice.repeat">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">repeat</span></span><a class="headerlink" href="#haptic.HapticDevice.repeat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the keyboard repeat rate (in characters per
+minute) and delay (in milliseconds).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="haptic.HapticDevice.rumble">
+<span class="sig-name descname"><span class="pre">rumble</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repeat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.rumble" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cause the device to rumble.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><p><strong>repeat</strong> (<em>int</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="haptic.HapticDevice.set_absinfo">
+<span class="sig-name descname"><span class="pre">set_absinfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis_num</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fuzz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.set_absinfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update <code class="xref py py-class docutils literal notranslate"><span class="pre">AbsInfo</span></code> values. Only specified values will be overwritten.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>axis_num</strong> (<em>int</em>) – EV_ABS keycode (example <code class="xref py py-attr docutils literal notranslate"><span class="pre">ecodes.ABS_X</span></code>)</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">device</span><span class="o">.</span><span class="n">set_absinfo</span><span class="p">(</span><span class="n">ecodes</span><span class="o">.</span><span class="n">ABS_X</span><span class="p">,</span> <span class="nb">min</span><span class="o">=-</span><span class="mi">2000</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">2000</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can also unpack AbsInfo tuple that will overwrite all values</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">device</span><span class="o">.</span><span class="n">set_absinfo</span><span class="p">(</span><span class="n">ecodes</span><span class="o">.</span><span class="n">ABS_Y</span><span class="p">,</span> <span class="o">*</span><span class="n">AbsInfo</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">2000</span><span class="p">,</span> <span class="mi">2000</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="haptic.HapticDevice.set_led">
+<span class="sig-name descname"><span class="pre">set_led</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">led_num</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.set_led" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the state of the selected LED.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">device</span><span class="o">.</span><span class="n">set_led</span><span class="p">(</span><span class="n">ecodes</span><span class="o">.</span><span class="n">LED_NUML</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="haptic.HapticDevice.ungrab">
+<span class="sig-name descname"><span class="pre">ungrab</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.ungrab" title="Permalink to this definition">¶</a></dt>
+<dd><p>Release device if it has been already grabbed (uses <cite>EVIOCGRAB</cite>).</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Releasing an already released device will raise an
+<code class="docutils literal notranslate"><span class="pre">IOError('Invalid</span> <span class="pre">argument')</span></code>.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="haptic.HapticDevice.upload_effect">
+<span class="sig-name descname"><span class="pre">upload_effect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">effect</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.upload_effect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Upload a force feedback effect to a force feedback device.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="haptic.HapticDevice.write">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">etype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inject an input event into the input subsystem. Events are
+queued until a synchronization event is received.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>etype</strong> – event type (e.g. <code class="docutils literal notranslate"><span class="pre">EV_KEY</span></code>).</p></li>
+<li><p><strong>code</strong> – event code (e.g. <code class="docutils literal notranslate"><span class="pre">KEY_A</span></code>).</p></li>
+<li><p><strong>value</strong> – event value (e.g. 0 1 2 - depends on event type).</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ui</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">EV_KEY</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">KEY_A</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># key A - down</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ui</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">EV_KEY</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">KEY_A</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="c1"># key A - up</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="haptic.HapticDevice.write_event">
+<span class="sig-name descname"><span class="pre">write_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.write_event" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inject an input event into the input subsystem. Events are
+queued until a synchronization event is received.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>event</strong> (<em>InputEvent</em>) – InputEvent instance or an object with an <code class="docutils literal notranslate"><span class="pre">event</span></code> attribute
+(<code class="xref py py-class docutils literal notranslate"><span class="pre">KeyEvent</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">RelEvent</span></code> etc).</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ev</span> <span class="o">=</span> <span class="n">InputEvent</span><span class="p">(</span><span class="mi">1334414993</span><span class="p">,</span> <span class="mi">274296</span><span class="p">,</span> <span class="n">ecodes</span><span class="o">.</span><span class="n">EV_KEY</span><span class="p">,</span> <span class="n">ecodes</span><span class="o">.</span><span class="n">KEY_A</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ui</span><span class="o">.</span><span class="n">write_event</span><span class="p">(</span><span class="n">ev</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Haptic feedback experiments</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">HapticDevice</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../index.html" title="previous chapter">Documentation for HapticFeedback experiments!</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Christian Brickhouse.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.1.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/classes/HapticDevice.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
