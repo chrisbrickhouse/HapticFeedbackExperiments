@@ -39,11 +39,56 @@
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">haptic.</span></span><span class="sig-name descname"><span class="pre">HapticDevice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id_</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dev</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice" title="Permalink to this definition">¶</a></dt>
 <dd><p>Manage calibration and use of a haptic device.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="haptic.HapticDevice._device">
-<span class="sig-name descname"><span class="pre">_device</span></span><a class="headerlink" href="#haptic.HapticDevice._device" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
+<dt class="sig sig-object py" id="haptic.HapticDevice.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#haptic.HapticDevice.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>System-provided name for the device.</p>
+<dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>evdev.InputDevice</p>
+<dd class="field-odd"><p>string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="haptic.HapticDevice.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#haptic.HapticDevice.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Index of device in pyglet’s list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="haptic.HapticDevice.effect">
+<span class="sig-name descname"><span class="pre">effect</span></span><a class="headerlink" href="#haptic.HapticDevice.effect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main evdev force effect.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>evdev.ff.Effect</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="haptic.HapticDevice.effect_id">
+<span class="sig-name descname"><span class="pre">effect_id</span></span><a class="headerlink" href="#haptic.HapticDevice.effect_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>The ID of the effect uploaded to the device.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int?</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="haptic.HapticDevice.offset">
+<span class="sig-name descname"><span class="pre">offset</span></span><a class="headerlink" href="#haptic.HapticDevice.offset" title="Permalink to this definition">¶</a></dt>
+<dd><p>How much to offset inputs from the joysticks.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>tuple</p>
 </dd>
 </dl>
 </dd></dl>
@@ -51,19 +96,21 @@
 <dl class="py attribute">
 <dt class="sig sig-object py" id="haptic.HapticDevice.strongMagnitude">
 <span class="sig-name descname"><span class="pre">strongMagnitude</span></span><a class="headerlink" href="#haptic.HapticDevice.strongMagnitude" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>Vibration strength for the strong motor</p>
+<dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>hexadecimal</p>
+<dd class="field-odd"><p>int</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="haptic.HapticDevice.weakMAgnitude">
-<span class="sig-name descname"><span class="pre">weakMAgnitude</span></span><a class="headerlink" href="#haptic.HapticDevice.weakMAgnitude" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
+<dt class="sig sig-object py" id="haptic.HapticDevice.weakMagnitude">
+<span class="sig-name descname"><span class="pre">weakMagnitude</span></span><a class="headerlink" href="#haptic.HapticDevice.weakMagnitude" title="Permalink to this definition">¶</a></dt>
+<dd><p>Vibration strength for the weak motor</p>
+<dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>hexadecimal</p>
+<dd class="field-odd"><p>int</p>
 </dd>
 </dl>
 </dd></dl>
@@ -131,12 +178,35 @@ an instance of <code class="xref py py-class docutils literal notranslate"><span
 down by 0x0f00 until the user presses the south button
 on the controller (e.g., x on dualshock). Pressing
 the east button progresses the calibration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sMag</strong> (<em>int</em>) – Strength of strong motor vibration.</p></li>
+<li><p><strong>wMag</strong> (<em>int</em>) – Strength of weak motor vibration.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – Both motors may not be set to zero.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="haptic.HapticDevice.calibrateStick">
 <span class="sig-name descname"><span class="pre">calibrateStick</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">win</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.calibrateStick" title="Permalink to this definition">¶</a></dt>
-<dd><p>Move stick, release, then press West</p>
+<dd><p>Calibrate the stick’s resting position.</p>
+<dl class="simple">
+<dt>Currently, the procedure is to move the right stick around, release,</dt><dd><p>and press the West button (square on PS, X on MS). Future
+implementations may support other sticks or specified buttons</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>win</strong> (<em>psychopy.visual.Window</em>) – The window being used by the experiment.
+This is needed because the joystick’s input is only updated on
+screen flip.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -194,7 +264,7 @@ it possible to pass instances directly to <code class="xref py py-func docutils 
 <dl class="py method">
 <dt class="sig sig-object py" id="haptic.HapticDevice.getAllAxes">
 <span class="sig-name descname"><span class="pre">getAllAxes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.getAllAxes" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get a list of all current axis values.</p>
+<dd><p>Get input from all sticks, minus offset if possible</p>
 </dd></dl>
 
 <dl class="py method">
@@ -227,9 +297,7 @@ it possible to pass instances directly to <code class="xref py py-func docutils 
 <dl class="py method">
 <dt class="sig sig-object py" id="haptic.HapticDevice.getHat">
 <span class="sig-name descname"><span class="pre">getHat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.getHat" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the position of a particular hat.</p>
-<p>The position returned is an (x, y) tuple where x and y
-can be -1, 0 or +1</p>
+<dd><p>Get the d-pad input. Not currently used</p>
 </dd></dl>
 
 <dl class="py method">
@@ -369,7 +437,7 @@ minute) and delay (in milliseconds).</p>
 <dd><p>Cause the device to rumble.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
-<dd class="field-odd"><p><strong>repeat</strong> (<em>int</em>) – </p>
+<dd class="field-odd"><p><strong>repeat</strong> (<em>int</em>) – How long the device should rumble for, in seconds</p>
 </dd>
 </dl>
 </dd></dl>

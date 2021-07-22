@@ -1,4 +1,5 @@
 from evdev import ecodes, ff, InputDevice, util
+from numpy import subtract
 from psychopy.hardware import joystick
 
 
@@ -6,15 +7,29 @@ class HapticDevice(joystick.Joystick, InputDevice):
     """Manage calibration and use of a haptic device.
 
     Attributes:
-      _device (evdev.InputDevice) the input device in use
-      strongMagnitude (hexadecimal) vibration strength for the strong motor
-      weakMAgnitude (hexadecimal) vibration strength for the weak motor
+      name (string): System-provided name for the device.
+      id (int): Index of device in pyglet's list.
+      effect (evdev.ff.Effect): Main evdev force effect.
+      effect_id (int?): The ID of the effect uploaded to the device.
+      offset (tuple): How much to offset inputs from the joysticks.
+      strongMagnitude (int): Vibration strength for the strong motor
+      weakMagnitude (int): Vibration strength for the weak motor
     """
 
     strongMagnitude = 0x0000
     weakMagnitude = 0xFFF0
 
     def __init__(self, id_=0, dev=None):
+        """Creates a HapticDevice derived from evdev and psychopy
+
+        Keyword arguments:
+          id_ (int): ID of device in pyglet's list.
+          dev (string): Path to the /dev device.
+
+        Raises:
+          ValueError: If the device specified by `dev` cannot
+            be found, an error is thrown.
+        """
         # Initiate joystick.Joystick
         joystick.Joystick.__init__(self, id_)
 
@@ -43,6 +58,13 @@ class HapticDevice(joystick.Joystick, InputDevice):
         down by 0x0f00 until the user presses the south button
         on the controller (e.g., x on dualshock). Pressing
         the east button progresses the calibration.
+
+        Keyword arguments:
+          sMag (int): Strength of strong motor vibration.
+          wMag (int): Strength of weak motor vibration.
+
+        Raises:
+          ValueError: Both motors may not be set to zero.
         """
         if sMag <= 0 and wMag <= 0:
             raise ValueError("Rumble cannot be zero")
@@ -59,30 +81,42 @@ class HapticDevice(joystick.Joystick, InputDevice):
                     break
 
     def calibrateStick(self, win):
-        """Move stick, release, then press West"""
+        """Calibrate the stick's resting position.
+
+        Currently, the procedure is to move the right stick around, release,
+          and press the West button (square on PS, X on MS). Future
+          implementations may support other sticks or specified buttons
+
+        Arguments:
+          win (psychopy.visual.Window): The window being used by the experiment.
+            This is needed because the joystick's input is only updated on
+            screen flip.
+        """
 
         while True:
             stickPos = tuple(joystick.Joystick.getAllAxes(self))
             if self.getAllButtons()[3] == True:
-                print(stickPos)
+                # print(stickPos)
                 self.offset = stickPos
                 break
             win.flip()
 
     def getAllAxes(self):
+        """Get input from all sticks, minus offset if possible"""
         try:
             return subtract(joystick.Joystick.getAllAxes(self), self.offset)
         except:
             return joystick.Joystick.getAllAxes(self)
 
     def getHat(self, n):
+        "Get the d-pad input. Not currently used"
         return self.getAllHats()[n]
 
     def rumble(self, repeat=1):
         """Cause the device to rumble.
 
         Keyword arguments:
-            repeat (int) How long the device should rumble for, in seconds
+            repeat (int): How long the device should rumble for, in seconds
         """
         try:
             self.write(ecodes.EV_FF, self.effect_id, repeat)
