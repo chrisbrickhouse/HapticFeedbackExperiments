@@ -5,3 +5,4 @@ __pycache__
 *.orig
 *-mwe.py
 *.pickle
+*.egg*

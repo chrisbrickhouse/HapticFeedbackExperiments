@@ -9,8 +9,10 @@ Documentation for HapticFeedback experiments!
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
-   
+
+   classes/Experiment
    classes/HapticDevice
+
 
 Indices and tables
 ==================

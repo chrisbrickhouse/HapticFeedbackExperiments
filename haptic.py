@@ -1,6 +1,7 @@
 from evdev import ecodes, ff, InputDevice, util
 from numpy import subtract
 from psychopy.hardware import joystick
+from psychopy import core, visual
 
 
 class HapticDevice(joystick.Joystick, InputDevice):
@@ -141,6 +142,126 @@ class HapticDevice(joystick.Joystick, InputDevice):
             ff.EffectType(ff_rumble_effect=rumble),
         )
         self.effect = effect
+
+
+class Experiment:
+    """Experiment objects control the flow of an experiment and
+    serve as an abstraction layer above the hardware and
+    graphics managment layers. It is set up to primarily use
+    callback methods allowing external definition of processes
+    without requiring (but still allowing) management of the
+    execution chain.
+
+    Attributes:
+      window (psychopy.visual.window): The psychopy window in
+        use for this experiment.
+      joystick (HapticDevice): The joystick in use.
+      stims: Will be set to the output of the `makeStims`
+        callback. See `makeStims`.
+      invert_y_axis (bool): Whether the stick position's y-axis
+        should be inverted by default.
+    """
+
+    def __init__(self, w, **kwargs):
+        """Create an Experiment object
+
+        Arguments:
+          w (psychopy.visual.Window): the psychopy window to use
+            for this experiment
+
+        Keyword arguments:
+          joystick (HapticDevice, optional): The joystick to
+            send haptic events to.
+          stims (function): A callback function used to make the
+            stimuli on initialization. The function will be passed
+            the `window` attribute as the first argument and then
+            the arguments in `stimargs` and `stimkwargs`.
+          stimargs (list): Arguments to pass to the `stims` callback.
+          stimkwargs (dictionary): Keyword arguments to pass to the
+            `stims` callback.
+        """
+        self.window = w
+        try:
+            self.setJoystick(kwargs["joystick"])
+        except KeyError:
+            pass
+        try:
+            self.makeStims(kwargs["stims"], *kwargs["stimargs"], **kwargs["stimkwargs"])
+        except KeyError:
+            pass
+        try:
+            self.invert_y_axis = kwargs["invertaxis"]
+        except KeyError:
+            self.invert_y_axis = False
+
+    def makeStims(self, func, *args, **kwargs):
+        """Run the callback to make stimuli.
+
+        Argument:
+          func (function): A callback to run. The first argument
+            to this function will be `Experiment.window`.
+        """
+        self.stims = func(self.window, *args, **kwargs)
+
+    def setJoystick(self, joy):
+        self.joystick = joy
+
+    def calibrate(self):
+        """Runs the joystick calibration methods.
+
+        Warning:
+          This should be considered highly unstable.
+            Its operation will be changed to accomodate changes in
+            the `haptic.HapticDevice` calibration scheme providing
+            a relatively seamless integration of calibration
+            into main experiment files.
+        """
+        self.joystick.calibrateRumble()
+        self.joystick.calibrateStick(self.window)
+
+    def run(self, n=1, func=None, funcargs=[], funckwargs={}):
+        """Run the provided function in a loop.
+
+        This method abstracts running `visual.window.flip` loops and
+          drawing objects to the screen. Th provided function is run
+          on each loop and is provided the `window` object and the
+          frame number (starting from 0). These can be used to do
+          more fine-grained editing within the callback.
+
+        The callback function should return a list of objects to
+          draw in the order they should be drawn.
+
+        Warning:
+          The callback function should not flip the window.
+            Doing so will introduce errors into your experiment timing.
+
+        Keyword arguments:
+          n (int): The number of frames to run. On a monitor with a
+            60Hz refresh rate, each frame corresponds to roughly 17ms.
+            Defaults to 1.
+          func (function): A callback function to run on each loop
+            pass. The first argument to this callback will be the
+            `window` object, and the second will be the frame number.
+            This function should return a list of objects to draw.
+          funcargs (list): Positional arguments for func.
+          funckwargs (dictionary): Keyword arguments for func.
+        """
+        for frameN in range(n):
+            try:
+                draw = func(self.window, frameN, *funcargs, **funckwargs)
+                for obj in draw:
+                    obj.draw()
+            except TypeError as e:
+                print(e)
+                pass
+            win.flip()
+
+    def stickPos(self, start=-3, stop=-1):
+        """Provide the stick position, inverting y-axis if needed."""
+        pos = self.joystick.getAllAxes()[start:stop]
+        if self.invert_y_axis:
+            pos[1] *= -1
+        return tuple(pos)
 
 
 if __name__ == "__main__":

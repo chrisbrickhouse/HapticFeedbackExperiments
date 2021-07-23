@@ -1,6 +1,6 @@
 HapticDevice
 ============
 
-.. automodule:: haptic
+.. autoclass:: haptic.HapticDevice
    :members:
    :inherited-members:
