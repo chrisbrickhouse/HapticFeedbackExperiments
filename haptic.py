@@ -52,7 +52,11 @@ class HapticDevice(joystick.Joystick, InputDevice):
         self._filename = self._device.device._filename
         InputDevice.__init__(self, self._filename)
 
-    def calibrateRumble(self, sMag=0x0000, wMag=0xFFF0):
+    def calibrateRumble(
+        self,
+        sMag,
+        wMag,
+    ):
         """Interactive calibration of vibration strength
 
         The vibration strength starts at wMag and ticks
@@ -60,7 +64,7 @@ class HapticDevice(joystick.Joystick, InputDevice):
         on the controller (e.g., x on dualshock). Pressing
         the east button progresses the calibration.
 
-        Keyword arguments:
+        Arguments:
           sMag (int): Strength of strong motor vibration.
           wMag (int): Strength of weak motor vibration.
           display (function): A callback function to handle
@@ -75,17 +79,8 @@ class HapticDevice(joystick.Joystick, InputDevice):
             raise ValueError("Rumble cannot be zero")
         self.__setEffect(sMag, wMag)
         self.rumble()
-        for event in self.read_loop():
-            if event.type == ecodes.EV_KEY:
-                if event.code == 304 and event.value == 1:
-                    self.strongMagnitude = sMag
-                    self.weakMagnitude = wMag
-                    break
-                elif event.code == 305 and event.value == 1:
-                    self.calibrate(sMag, wMag - 0x0F00)
-                    break
 
-    def calibrateStick(self, win):
+    def calibrateStick(self, win, display=None, displayArgs=[]):
         """Calibrate the stick's resting position.
 
         Currently, the procedure is to move the right stick around, release,
@@ -100,6 +95,10 @@ class HapticDevice(joystick.Joystick, InputDevice):
 
         while True:
             stickPos = tuple(joystick.Joystick.getAllAxes(self))
+            try:
+                display(*displayArgs)
+            except TypeError:
+                pass
             if self.getAllButtons()[3] == True:
                 # print(stickPos)
                 self.offset = stickPos
@@ -126,19 +125,26 @@ class HapticDevice(joystick.Joystick, InputDevice):
         try:
             self.write(ecodes.EV_FF, self.effect_id, repeat)
         except AttributeError:
-            effect_id = self.upload_effect(self.effect)
-            self.effect_id = effect_id
+            self.effect_id = self.upload_effect(self.effect)
             self.rumble()
+
+    def setMagnitudes(self, sMag, wMag):
+        self.strongMagnitude = sMag
+        self.weakMagnitude = wMag
+
+    def setOffset(self, offset):
+        self.offset = offset
 
     def __setEffect(self, sMag, wMag, duration=100):
         try:
             print(self.effect_id)
             self.erase_effect(self.effect_id)
+            del self.effect_id
         except AttributeError:
             pass
 
         rumble = ff.Rumble(strong_magnitude=sMag, weak_magnitude=wMag)
-        effect = ff.Effect(
+        self.effect = ff.Effect(
             ecodes.FF_RUMBLE,
             -1,
             0,
@@ -146,7 +152,6 @@ class HapticDevice(joystick.Joystick, InputDevice):
             ff.Replay(duration, 0),
             ff.EffectType(ff_rumble_effect=rumble),
         )
-        self.effect = effect
 
 
 class Experiment:
@@ -156,6 +161,9 @@ class Experiment:
     callback methods allowing external definition of processes
     without requiring (but still allowing) management of the
     execution chain.
+
+    The best way to use this is by extending the class, creating
+    a child experiment and overwriting methods where needed.
 
     Attributes:
       window (psychopy.visual.window): The psychopy window in
@@ -186,32 +194,22 @@ class Experiment:
             `stims` callback.
         """
         self.window = w
-        try:
-            self.setJoystick(kwargs["joystick"])
-        except KeyError:
-            pass
-        try:
-            self.makeStims(kwargs["stims"], *kwargs["stimargs"], **kwargs["stimkwargs"])
-        except KeyError:
-            pass
+        self.makeStims()
+        self.setJoystick()
         try:
             self.invert_y_axis = kwargs["invertaxis"]
         except KeyError:
             self.invert_y_axis = False
 
-    def makeStims(self, func, *args, **kwargs):
-        """Run the callback to make stimuli.
-
-        Argument:
-          func (function): A callback to run. The first argument
-            to this function will be `Experiment.window`.
-        """
-        self.stims = func(self.window, *args, **kwargs)
+    def makeStims(self):
+        """Overwrite with own function."""
+        pass
 
     def setJoystick(self, joy):
-        self.joystick = joy
+        """Overwrite with own function."""
+        pass
 
-    def calibrate(self):
+    def calibrate(self, *args, **kwargs):
         """Runs the joystick calibration methods.
 
         Warning:
@@ -220,9 +218,76 @@ class Experiment:
             the `haptic.HapticDevice` calibration scheme providing
             a relatively seamless integration of calibration
             into main experiment files.
+
+        Keyword arguments:
+          sMag (int): Strong motor magnitude.
+          wMag (int): Weak motor magnitude.
+          step (int): How much to step up the magnitude.
         """
-        self.joystick.calibrateRumble()
-        self.joystick.calibrateStick(self.window)
+
+        def calibrateRumble(sMag, wMag):
+            """Interactive calibration of vibration strength
+
+            The vibration strength starts at wMag and ticks
+            up by 0x0f00 until the user presses the south button
+            on the controller (e.g., x on dualshock). Pressing
+            the east button progresses the calibration.
+
+            Raises:
+              ValueError: Both motors may not be set to zero.
+            """
+            if sMag <= 0 and wMag <= 0:
+                raise ValueError("Rumble cannot be zero")
+
+            self.joystick.calibrateRumble(sMag, wMag)
+            print(wMag)
+            while True:
+                self.calibrateRumbleDisplay()
+                buttons = self.joystick.getAllButtons()
+                if buttons[0]:
+                    self.joystick.setMagnitudes(sMag, wMag)
+                    return
+                elif buttons[1]:
+                    while True:
+                        if not self.joystick.getAllButtons()[1]:
+                            self.run(50, self.calibrateRumbleDisplay)
+                            break
+                        self.run(1, self.calibrateRumbleDisplay)
+                    calibrateRumble(sMag, wMag + 0x0F00)
+                self.window.flip()
+
+        def calibrateStick():
+            """Calibrate the stick's resting position.
+
+            Currently, the procedure is to move the right stick around, release,
+              and press the West button (square on PS, X on MS). Future
+              implementations may support other sticks or specified buttons
+            """
+
+            while True:
+                self.calibrateStickDisplay()
+                stickPos = tuple(self.joystick.getAllAxes())
+                buttons = self.joystick.getAllButtons()
+                if buttons[3]:
+                    self.joystick.setOffset(stickPos)
+                    return
+                self.window.flip()
+
+        try:
+            sMag = kwargs["sMag"]
+        except KeyError:
+            sMag = 0x0000
+        try:
+            wMag = kwargs["wMag"]
+        except KeyError:
+            wMag = 0x0F00
+        try:
+            step = kwargs["step"]
+        except KeyError:
+            step = 0x0400
+
+        calibrateRumble(sMag, wMag)
+        calibrateStick()
 
     def run(self, n=1, func=None, funcargs=[], funckwargs={}):
         """Run the provided function in a loop.
@@ -247,26 +312,26 @@ class Experiment:
             Defaults to 1.
           func (function): A callback function to run on each loop
             pass. The first argument to this callback will be the
-            `window` object, and the second will be the frame number.
-            This function should return a list of objects to draw.
+            the frame number. This function should return a list of
+            objects to draw.
           funcargs (list): Positional arguments for func.
           funckwargs (dictionary): Keyword arguments for func.
         """
         for frameN in range(n):
             try:
-                draw = func(self.window, frameN, *funcargs, **funckwargs)
+                draw = func(frameN, *funcargs, **funckwargs)
                 for obj in draw:
                     obj.draw()
             except TypeError as e:
-                print(e)
                 pass
-            win.flip()
+            self.window.flip()
 
-    def stickPos(self, start=-3, stop=-1):
+    def stickPos(self, start=-3, stop=-1, tolerance=0.1, scale=0.25):
         """Provide the stick position, inverting y-axis if needed."""
         pos = self.joystick.getAllAxes()[start:stop]
         if self.invert_y_axis:
             pos[1] *= -1
+        pos = [x * scale if abs(x) > tolerance else 0.0 for x in pos]
         return tuple(pos)
 
 

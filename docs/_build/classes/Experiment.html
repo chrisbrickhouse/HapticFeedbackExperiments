@@ -44,6 +44,8 @@ graphics managment layers. It is set up to primarily use
 callback methods allowing external definition of processes
 without requiring (but still allowing) management of the
 execution chain.</p>
+<p>The best way to use this is by extending the class, creating
+a child experiment and overwriting methods where needed.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="haptic.Experiment.window">
 <span class="sig-name descname"><span class="pre">window</span></span><a class="headerlink" href="#haptic.Experiment.window" title="Permalink to this definition">¶</a></dt>
@@ -88,7 +90,7 @@ should be inverted by default.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="haptic.Experiment.calibrate">
-<span class="sig-name descname"><span class="pre">calibrate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#haptic.Experiment.calibrate" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">calibrate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#haptic.Experiment.calibrate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Runs the joystick calibration methods.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -100,19 +102,21 @@ into main experiment files.</p>
 </dd>
 </dl>
 </div>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sMag</strong> (<em>int</em>) – Strong motor magnitude.</p></li>
+<li><p><strong>wMag</strong> (<em>int</em>) – Weak motor magnitude.</p></li>
+<li><p><strong>step</strong> (<em>int</em>) – How much to step up the magnitude.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="haptic.Experiment.makeStims">
-<span class="sig-name descname"><span class="pre">makeStims</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#haptic.Experiment.makeStims" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run the callback to make stimuli.</p>
-<dl class="simple">
-<dt>Argument:</dt><dd><dl class="simple">
-<dt>func (function): A callback to run. The first argument</dt><dd><p>to this function will be <cite>Experiment.window</cite>.</p>
-</dd>
-</dl>
-</dd>
-</dl>
+<span class="sig-name descname"><span class="pre">makeStims</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#haptic.Experiment.makeStims" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overwrite with own function.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -143,8 +147,8 @@ more fine-grained editing within the callback.</p>
 Defaults to 1.</p></li>
 <li><p><strong>func</strong> (<em>function</em>) – A callback function to run on each loop
 pass. The first argument to this callback will be the
-<cite>window</cite> object, and the second will be the frame number.
-This function should return a list of objects to draw.</p></li>
+the frame number. This function should return a list of
+objects to draw.</p></li>
 <li><p><strong>funcargs</strong> (<em>list</em>) – Positional arguments for func.</p></li>
 <li><p><strong>funckwargs</strong> (<em>dictionary</em>) – Keyword arguments for func.</p></li>
 </ul>
@@ -153,8 +157,14 @@ This function should return a list of objects to draw.</p></li>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="haptic.Experiment.setJoystick">
+<span class="sig-name descname"><span class="pre">setJoystick</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">joy</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#haptic.Experiment.setJoystick" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overwrite with own function.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="haptic.Experiment.stickPos">
-<span class="sig-name descname"><span class="pre">stickPos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#haptic.Experiment.stickPos" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">stickPos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tolerance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.25</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#haptic.Experiment.stickPos" title="Permalink to this definition">¶</a></dt>
 <dd><p>Provide the stick position, inverting y-axis if needed.</p>
 </dd></dl>
 

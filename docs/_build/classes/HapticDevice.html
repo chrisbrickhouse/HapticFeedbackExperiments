@@ -172,14 +172,14 @@ an instance of <code class="xref py py-class docutils literal notranslate"><span
 
 <dl class="py method">
 <dt class="sig sig-object py" id="haptic.HapticDevice.calibrateRumble">
-<span class="sig-name descname"><span class="pre">calibrateRumble</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sMag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wMag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">65520</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.calibrateRumble" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">calibrateRumble</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sMag</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wMag</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.calibrateRumble" title="Permalink to this definition">¶</a></dt>
 <dd><p>Interactive calibration of vibration strength</p>
 <p>The vibration strength starts at wMag and ticks
 down by 0x0f00 until the user presses the south button
 on the controller (e.g., x on dualshock). Pressing
 the east button progresses the calibration.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Keyword Arguments</dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sMag</strong> (<em>int</em>) – Strength of strong motor vibration.</p></li>
 <li><p><strong>wMag</strong> (<em>int</em>) – Strength of weak motor vibration.</p></li>
@@ -193,7 +193,7 @@ the east button progresses the calibration.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="haptic.HapticDevice.calibrateStick">
-<span class="sig-name descname"><span class="pre">calibrateStick</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">win</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.calibrateStick" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">calibrateStick</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">win</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">display</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">displayArgs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.calibrateStick" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calibrate the stick’s resting position.</p>
 <dl class="simple">
 <dt>Currently, the procedure is to move the right stick around, release,</dt><dd><p>and press the West button (square on PS, X on MS). Future
