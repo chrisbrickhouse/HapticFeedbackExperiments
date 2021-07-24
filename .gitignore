@@ -6,3 +6,5 @@ __pycache__
 *-mwe.py
 *.pickle
 *.egg*
+*.bak
+*.swo

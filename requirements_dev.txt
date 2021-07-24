@@ -99,6 +99,7 @@ sphinxcontrib-jsmath==1.0.1
 sphinxcontrib-napoleon==0.7
 sphinxcontrib-qthelp==1.0.3
 sphinxcontrib-serializinghtml==1.1.5
+stanford-theme==1.0
 tables==3.6.1
 toml==0.10.2
 tomli==1.0.4
