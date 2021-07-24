@@ -63,6 +63,10 @@ class HapticDevice(joystick.Joystick, InputDevice):
         Keyword arguments:
           sMag (int): Strength of strong motor vibration.
           wMag (int): Strength of weak motor vibration.
+          display (function): A callback function to handle
+            display of instructional text. Gets passed the
+            Experiment instance. Only called once.
+          displayArgs (list): Arguments to be passed to `display`.
 
         Raises:
           ValueError: Both motors may not be set to zero.
@@ -128,6 +132,7 @@ class HapticDevice(joystick.Joystick, InputDevice):
 
     def __setEffect(self, sMag, wMag, duration=100):
         try:
+            print(self.effect_id)
             self.erase_effect(self.effect_id)
         except AttributeError:
             pass
@@ -223,6 +228,7 @@ class Experiment:
         """Run the provided function in a loop.
 
         This method abstracts running `visual.window.flip` loops and
+            the experiment. T
           drawing objects to the screen. Th provided function is run
           on each loop and is provided the `window` object and the
           frame number (starting from 0). These can be used to do
