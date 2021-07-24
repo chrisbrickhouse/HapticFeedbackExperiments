@@ -15,6 +15,7 @@
     <script src="../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Experiment" href="../examples/ExperimentExample.html" />
     <link rel="prev" title="Experiment" href="Experiment.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
@@ -172,17 +173,21 @@ an instance of <code class="xref py py-class docutils literal notranslate"><span
 
 <dl class="py method">
 <dt class="sig sig-object py" id="haptic.HapticDevice.calibrateRumble">
-<span class="sig-name descname"><span class="pre">calibrateRumble</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sMag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wMag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">65520</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.calibrateRumble" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">calibrateRumble</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sMag</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wMag</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.calibrateRumble" title="Permalink to this definition">¶</a></dt>
 <dd><p>Interactive calibration of vibration strength</p>
 <p>The vibration strength starts at wMag and ticks
 down by 0x0f00 until the user presses the south button
 on the controller (e.g., x on dualshock). Pressing
 the east button progresses the calibration.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Keyword Arguments</dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sMag</strong> (<em>int</em>) – Strength of strong motor vibration.</p></li>
 <li><p><strong>wMag</strong> (<em>int</em>) – Strength of weak motor vibration.</p></li>
+<li><p><strong>display</strong> (<em>function</em>) – A callback function to handle
+display of instructional text. Gets passed the
+Experiment instance. Only called once.</p></li>
+<li><p><strong>displayArgs</strong> (<em>list</em>) – Arguments to be passed to <cite>display</cite>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises</dt>
@@ -193,7 +198,7 @@ the east button progresses the calibration.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="haptic.HapticDevice.calibrateStick">
-<span class="sig-name descname"><span class="pre">calibrateStick</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">win</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.calibrateStick" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">calibrateStick</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">win</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">display</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">displayArgs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#haptic.HapticDevice.calibrateStick" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calibrate the stick’s resting position.</p>
 <dl class="simple">
 <dt>Currently, the procedure is to move the right stick around, release,</dt><dd><p>and press the West button (square on PS, X on MS). Future
@@ -548,10 +553,11 @@ queued until a synchronization event is received.</p>
 
 
 <h3>Navigation</h3>
-<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<p class="caption" role="heading"><span class="caption-text">Classes:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="Experiment.html">Experiment</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">HapticDevice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/ExperimentExample.html">Experiment</a></li>
 </ul>
 
 <div class="relations">
@@ -559,6 +565,7 @@ queued until a synchronization event is received.</p>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
       <li>Previous: <a href="Experiment.html" title="previous chapter">Experiment</a></li>
+      <li>Next: <a href="../examples/ExperimentExample.html" title="next chapter">Experiment</a></li>
   </ul></li>
 </ul>
 </div>

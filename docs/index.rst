@@ -12,6 +12,7 @@ Documentation for HapticFeedback experiments!
 
    classes/Experiment
    classes/HapticDevice
+   examples/ExperimentExample
 
 
 Indices and tables

@@ -3,25 +3,79 @@ from haptic import Experiment, HapticDevice
 
 
 class ExampleExperiment(Experiment):
+    """The Experiment class is used as a parent
+      class for all individual experiments. This
+      allows more automization while allowing
+      customization. This is generally done
+      through overwriting particular functions
+      defined in the Experiment class.
+
+    For example, the member function `makeStims`
+      will always be called on initialization
+      without the end user needing to remember
+      to add that call. Simply creating a member
+      function with that name will cause it
+      to be run.
+
+    Others are optional callbacks where certain
+      member functions will be called at specific
+      times. If an end user does not define their
+      own `calibrateRumbleDisplay` then nothing
+      will be shown but the calibration will still
+      fire. Rather than passing a callback function
+      class inheretence allows these callbacks to
+      be defined in the class.
+
+    In the case where you simply want to extend
+      the function of a base class method, you
+      can override the function here and call
+      `super().functionName(args)` when you
+      want the parent event to fire.
+    """
+
     def __init__(self):
-        win = visual.Window([400, 400])
-        super().__init__(win)
+        """Create an experiment.
 
-        self.invert_y_axis = True
+        The `__init__` function is where any
+          startup information goes. It is a
+          good place to define configuration
+          variables like `invert_y_axis`.
 
-        self.calibrate()
+        Remember to call the parent `__init__`
+        function using `super().__init__(window)`
+        or else some functions will not work.
+        """
+        win = visual.Window([400, 400])  # Create the window
+        super().__init__(win)  # Initialize the parent class
+
+        self.invert_y_axis = True  # Set config variable
+
+        self.calibrate()  # Defined in the parent class
         self.run(2000, self.moveLoop)
+        # Callback functions used in `run` calls should
+        # generally be member functions as this allows
+        # them to access the internal attributes and
+        # class methods.
 
     def calibrateRumbleDisplay(self):
+        """`Experiment.calibrate` looks for this method
+        and will run its contents on every window flip.
+        """
         self.stims["calibrateRumbleText"].draw()
         self.stims["buttons"]["south"].draw()
         self.stims["buttons"]["east"].draw()
 
     def calibrateStickDisplay(self):
+        """`Experiment.calibrate` looks for this method
+        and will run its contents on every window flip.
+        """
         self.stims["calibrateStickText"].draw()
         self.stims["buttons"]["west"].draw()
 
     def makeStims(self):
+        """`Experiment.__init__` looks for this method
+        and will run its contents on initialization.
+        """
         cursor = visual.Circle(self.window, fillColor="blue", radius=0.01)
         buttonImage = {
             "north": "img/48px-PlayStation_button_T.png",
@@ -55,9 +109,18 @@ class ExampleExperiment(Experiment):
         }
 
     def setJoystick(self):
+        """`Experiment.__init__` looks for this method
+        and will run its contents on initialization.
+        """
         self.joystick = HapticDevice()
 
     def moveLoop(self, frameN, *args, **kwargs):
+        """This is a callback used in the `__init__`
+        method above.
+
+        See also:
+          Experiment.run
+        """
         self.stims["cursor"].pos += self.stickPos()
         return [self.stims["cursor"]]
 

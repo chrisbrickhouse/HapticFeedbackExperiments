@@ -15,6 +15,7 @@
     <script src="../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Example experiment" href="../examples/ExperimentExample.html" />
     <link rel="prev" title="Experiment" href="Experiment.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
@@ -183,6 +184,10 @@ the east button progresses the calibration.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sMag</strong> (<em>int</em>) – Strength of strong motor vibration.</p></li>
 <li><p><strong>wMag</strong> (<em>int</em>) – Strength of weak motor vibration.</p></li>
+<li><p><strong>display</strong> (<em>function</em>) – A callback function to handle
+display of instructional text. Gets passed the
+Experiment instance. Only called once.</p></li>
+<li><p><strong>displayArgs</strong> (<em>list</em>) – Arguments to be passed to <cite>display</cite>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises</dt>
@@ -552,6 +557,7 @@ queued until a synchronization event is received.</p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="Experiment.html">Experiment</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">HapticDevice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/ExperimentExample.html">Example experiment</a></li>
 </ul>
 
 <div class="relations">
@@ -559,6 +565,7 @@ queued until a synchronization event is received.</p>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
       <li>Previous: <a href="Experiment.html" title="previous chapter">Experiment</a></li>
+      <li>Next: <a href="../examples/ExperimentExample.html" title="next chapter">Example experiment</a></li>
   </ul></li>
 </ul>
 </div>

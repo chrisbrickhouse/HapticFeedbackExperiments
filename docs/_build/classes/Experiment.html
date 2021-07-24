@@ -123,8 +123,11 @@ into main experiment files.</p>
 <dt class="sig sig-object py" id="haptic.Experiment.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">funcargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">funckwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#haptic.Experiment.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run the provided function in a loop.</p>
-<dl class="simple">
-<dt>This method abstracts running <cite>visual.window.flip</cite> loops and</dt><dd><p>drawing objects to the screen. Th provided function is run
+<dl>
+<dt>This method abstracts running <cite>visual.window.flip</cite> loops and</dt><dd><blockquote>
+<div><p>the experiment. T</p>
+</div></blockquote>
+<p>drawing objects to the screen. Th provided function is run
 on each loop and is provided the <cite>window</cite> object and the
 frame number (starting from 0). These can be used to do
 more fine-grained editing within the callback.</p>
@@ -193,6 +196,7 @@ objects to draw.</p></li>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Experiment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="HapticDevice.html">HapticDevice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/ExperimentExample.html">Example experiment</a></li>
 </ul>
 
 <div class="relations">

@@ -1,0 +1,242 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Example experiment &#8212; Haptic feedback experiments 0.0.3 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="HapticDevice" href="../classes/HapticDevice.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="example-experiment">
+<h1>Example experiment<a class="headerlink" href="#example-experiment" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">psychopy</span> <span class="kn">import</span> <span class="n">core</span><span class="p">,</span> <span class="n">visual</span>
+<span class="kn">from</span> <span class="nn">haptic</span> <span class="kn">import</span> <span class="n">Experiment</span><span class="p">,</span> <span class="n">HapticDevice</span>
+
+
+<span class="k">class</span> <span class="nc">ExampleExperiment</span><span class="p">(</span><span class="n">Experiment</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;The Experiment class is used as a parent</span>
+<span class="sd">      class for all individual experiments. This</span>
+<span class="sd">      allows more automization while allowing</span>
+<span class="sd">      customization. This is generally done</span>
+<span class="sd">      through overwriting particular functions</span>
+<span class="sd">      defined in the Experiment class.</span>
+
+<span class="sd">    For example, the member function `makeStims`</span>
+<span class="sd">      will always be called on initialization</span>
+<span class="sd">      without the end user needing to remember</span>
+<span class="sd">      to add that call. Simply creating a member</span>
+<span class="sd">      function with that name will cause it</span>
+<span class="sd">      to be run.</span>
+
+<span class="sd">    Others are optional callbacks where certain</span>
+<span class="sd">      member functions will be called at specific</span>
+<span class="sd">      times. If an end user does not define their</span>
+<span class="sd">      own `calibrateRumbleDisplay` then nothing</span>
+<span class="sd">      will be shown but the calibration will still</span>
+<span class="sd">      fire. Rather than passing a callback function</span>
+<span class="sd">      class inheretence allows these callbacks to</span>
+<span class="sd">      be defined in the class.</span>
+
+<span class="sd">    In the case where you simply want to extend</span>
+<span class="sd">      the function of a base class method, you</span>
+<span class="sd">      can override the function here and call</span>
+<span class="sd">      `super().functionName(args)` when you</span>
+<span class="sd">      want the parent event to fire.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create an experiment.</span>
+
+<span class="sd">        The `__init__` function is where any</span>
+<span class="sd">          startup information goes. It is a</span>
+<span class="sd">          good place to define configuration</span>
+<span class="sd">          variables like `invert_y_axis`.</span>
+
+<span class="sd">        Remember to call the parent `__init__`</span>
+<span class="sd">        function using `super().__init__(window)`</span>
+<span class="sd">        or else some functions will not work.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">win</span> <span class="o">=</span> <span class="n">visual</span><span class="o">.</span><span class="n">Window</span><span class="p">([</span><span class="mi">400</span><span class="p">,</span> <span class="mi">400</span><span class="p">])</span>  <span class="c1"># Create the window</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">win</span><span class="p">)</span>  <span class="c1"># Initialize the parent class</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">invert_y_axis</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Set config variable</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">calibrate</span><span class="p">()</span>  <span class="c1"># Defined in the parent class</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">moveLoop</span><span class="p">)</span>
+        <span class="c1"># Callback functions used in `run` calls should</span>
+        <span class="c1"># generally be member functions as this allows</span>
+        <span class="c1"># them to access the internal attributes and</span>
+        <span class="c1"># class methods.</span>
+
+    <span class="k">def</span> <span class="nf">calibrateRumbleDisplay</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;`Experiment.calibrate` looks for this method</span>
+<span class="sd">        and will run its contents on every window flip.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stims</span><span class="p">[</span><span class="s2">&quot;calibrateRumbleText&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stims</span><span class="p">[</span><span class="s2">&quot;buttons&quot;</span><span class="p">][</span><span class="s2">&quot;south&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stims</span><span class="p">[</span><span class="s2">&quot;buttons&quot;</span><span class="p">][</span><span class="s2">&quot;east&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">calibrateStickDisplay</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;`Experiment.calibrate` looks for this method</span>
+<span class="sd">        and will run its contents on every window flip.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stims</span><span class="p">[</span><span class="s2">&quot;calibrateStickText&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stims</span><span class="p">[</span><span class="s2">&quot;buttons&quot;</span><span class="p">][</span><span class="s2">&quot;west&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">makeStims</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;`Experiment.__init__` looks for this method</span>
+<span class="sd">        and will run its contents on initialization.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cursor</span> <span class="o">=</span> <span class="n">visual</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">window</span><span class="p">,</span> <span class="n">fillColor</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+        <span class="n">buttonImage</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;north&quot;</span><span class="p">:</span> <span class="s2">&quot;img/48px-PlayStation_button_T.png&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;south&quot;</span><span class="p">:</span> <span class="s2">&quot;img/48px-PlayStation_button_X.png&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;east&quot;</span><span class="p">:</span> <span class="s2">&quot;img/48px-PlayStation_button_C.png&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;west&quot;</span><span class="p">:</span> <span class="s2">&quot;img/48px-PlayStation_button_S.png&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">buttonRet</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">buttonImage</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">visual</span><span class="o">.</span><span class="n">ImageStim</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">window</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">k</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;.png&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">buttonRet</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+        <span class="n">calibrateRumbleText</span> <span class="o">=</span> <span class="n">visual</span><span class="o">.</span><span class="n">TextStim</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">window</span><span class="p">,</span>
+            <span class="n">text</span><span class="o">=</span><span class="s2">&quot;When you feel a vibration, please press</span><span class="se">\n\n\n\n</span><span class="s2">Otherwise press&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">calibrateStickText</span> <span class="o">=</span> <span class="n">visual</span><span class="o">.</span><span class="n">TextStim</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">window</span><span class="p">,</span>
+            <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Please move the right stick in a circle, then release it and press&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">calibrateStickText</span><span class="o">.</span><span class="n">pos</span> <span class="o">+=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">)</span>
+        <span class="n">buttonRet</span><span class="p">[</span><span class="s2">&quot;east&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">pos</span> <span class="o">-=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">)</span>
+        <span class="n">buttonRet</span><span class="p">[</span><span class="s2">&quot;south&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">pos</span> <span class="o">-=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+        <span class="n">buttonRet</span><span class="p">[</span><span class="s2">&quot;west&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">pos</span> <span class="o">-=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stims</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;cursor&quot;</span><span class="p">:</span> <span class="n">cursor</span><span class="p">,</span>
+            <span class="s2">&quot;buttons&quot;</span><span class="p">:</span> <span class="n">buttonRet</span><span class="p">,</span>
+            <span class="s2">&quot;calibrateRumbleText&quot;</span><span class="p">:</span> <span class="n">calibrateRumbleText</span><span class="p">,</span>
+            <span class="s2">&quot;calibrateStickText&quot;</span><span class="p">:</span> <span class="n">calibrateStickText</span><span class="p">,</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">setJoystick</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;`Experiment.__init__` looks for this method</span>
+<span class="sd">        and will run its contents on initialization.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">joystick</span> <span class="o">=</span> <span class="n">HapticDevice</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">moveLoop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frameN</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;This is a callback used in the `__init__`</span>
+<span class="sd">        method above.</span>
+
+<span class="sd">        See also:</span>
+<span class="sd">          Experiment.run</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stims</span><span class="p">[</span><span class="s2">&quot;cursor&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">pos</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stickPos</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">stims</span><span class="p">[</span><span class="s2">&quot;cursor&quot;</span><span class="p">]]</span>
+
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">ExampleExperiment</span><span class="p">()</span>
+<span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Haptic feedback experiments</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../classes/Experiment.html">Experiment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classes/HapticDevice.html">HapticDevice</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Example experiment</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../classes/HapticDevice.html" title="previous chapter">HapticDevice</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Christian Brickhouse.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.1.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/examples/ExperimentExample.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
