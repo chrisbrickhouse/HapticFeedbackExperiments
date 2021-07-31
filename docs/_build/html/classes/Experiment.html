@@ -120,6 +120,18 @@ into main experiment files.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="haptic.Experiment.on_run_end">
+<span class="sig-name descname"><span class="pre">on_run_end</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#haptic.Experiment.on_run_end" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback for end of a run loop. Replace with own method.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="haptic.Experiment.on_run_loop">
+<span class="sig-name descname"><span class="pre">on_run_loop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#haptic.Experiment.on_run_loop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback at start of every run loop.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="haptic.Experiment.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">funcargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">funckwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#haptic.Experiment.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run the provided function in a loop.</p>
@@ -161,8 +173,8 @@ objects to draw.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="haptic.Experiment.setJoystick">
-<span class="sig-name descname"><span class="pre">setJoystick</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">joy</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#haptic.Experiment.setJoystick" title="Permalink to this definition">¶</a></dt>
-<dd><p>Overwrite with own function.</p>
+<span class="sig-name descname"><span class="pre">setJoystick</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#haptic.Experiment.setJoystick" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates default joystick, can overwrite with own function.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -192,11 +204,12 @@ objects to draw.</p></li>
 
 
 <h3>Navigation</h3>
-<p class="caption" role="heading"><span class="caption-text">Classes:</span></p>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Experiment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="HapticDevice.html">HapticDevice</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../examples/ExperimentExample.html">Experiment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Data.html">Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/ExperimentExample.html">Example experiment</a></li>
 </ul>
 
 <div class="relations">

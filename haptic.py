@@ -1,6 +1,7 @@
 from evdev import ecodes, ff, InputDevice, util
 from numpy import subtract
 from psychopy.hardware import joystick
+from psychopy.sound import Sound
 from psychopy import core, visual
 
 
@@ -193,6 +194,7 @@ class Experiment:
           stimkwargs (dictionary): Keyword arguments to pass to the
             `stims` callback.
         """
+        self.data = Data()
         self.window = w
         self.makeStims()
         self.setJoystick()
@@ -205,9 +207,9 @@ class Experiment:
         """Overwrite with own function."""
         pass
 
-    def setJoystick(self, joy):
-        """Overwrite with own function."""
-        pass
+    def setJoystick(self):
+        """Creates default joystick, can overwrite with own function."""
+        self.joystick = HapticDevice()
 
     def calibrate(self, *args, **kwargs):
         """Runs the joystick calibration methods.
@@ -289,6 +291,20 @@ class Experiment:
         calibrateRumble(sMag, wMag)
         calibrateStick()
 
+    def checkHold(self):
+        while True:
+            if True not in self.joystick.getAllButtons():
+                break
+            self.window.flip()
+
+    def on_run_end(self):
+        """Callback for end of a run loop. Replace with own method."""
+        pass
+
+    def on_run_loop(self, frame):
+        """Callback at start of every run loop."""
+        pass
+
     def run(self, n=1, func=None, funcargs=[], funckwargs={}):
         """Run the provided function in a loop.
 
@@ -319,12 +335,20 @@ class Experiment:
         """
         for frameN in range(n):
             try:
+                self.on_run_loop(frameN)
+            except StopIteration:
+                self.checkHold()
+                break
+            try:
                 draw = func(frameN, *funcargs, **funckwargs)
                 for obj in draw:
                     obj.draw()
             except TypeError as e:
                 pass
+            except StopIteration:
+                break
             self.window.flip()
+        self.on_run_end()
 
     def stickPos(self, start=-3, stop=-1, tolerance=0.1, scale=0.25):
         """Provide the stick position, inverting y-axis if needed."""
@@ -333,6 +357,98 @@ class Experiment:
             pos[1] *= -1
         pos = [x * scale if abs(x) > tolerance else 0.0 for x in pos]
         return tuple(pos)
+
+
+class Trial:
+    def __init__(self, name, num, experiment):
+        self.name = name
+        self.number = num
+        self.experiment = experiment
+        self.data = {"trial_name": name, "trial_number": num, "data": {}}
+
+
+class Data:
+    """Custom data object. This data structure
+    functions as an associative array, essentially
+    acting like both a list and a dictionary.
+
+    It can be sliced like a list, have values
+    denoted by keys like a dictionary, but unlike
+    dictionaries these keys are *ordered* and can
+    be refered to either by name or position.
+
+    Attribute:
+        data (list): A list of tuples to implement associative array
+    """
+
+    def __init__(self):
+        self.data = []
+
+    def __getitem__(self, index):
+        """
+        Implements the retrieval of items given both
+        keys and list syntax. If the object is called
+        as a slice, ``data_object[1:4]``, the values
+        of each element will be returned as a list.
+
+        If the object is called with a string, then
+        it behaves like a dictionary and returns the
+        value associated with that key.
+
+        If the object is called with an int, then it
+        behaves like a list and returns the value at
+        that index regardless of the key.
+        """
+        if isinstance(index, slice):
+            ret = []
+            for i in range(*index.indices(len(self.data))):
+                ret.append(self.data[i][1])
+            return ret
+        elif isinstance(index, int):
+            return self.data[index][1]
+        elif isinstance(index, str):
+            # This should raise a KeyError if nothing is found
+            return [x[1] for x in self.data if x[0] == index][0]
+        else:
+            raise ValueError()
+
+    def __setitem__(self, index, value):
+        """Implements the setting of key value pairs."""
+        match = [x for x in self.data if x[0] == index]
+        if len(match) == 0:
+            self.data.append((index, value))
+        else:
+            i = self.data.index(match[0])
+            self.data[i] = (index, value)
+
+    def append(self, value):
+        """Implements an append method. The key will always be
+        the position in the list, specifically, the length of
+        the list at the time.
+        """
+        i = len(self.data)
+        self.data.append((i, value))
+
+    def __len__(self):
+        return len(self.data)
+
+    def __str__(self):
+        return str(self.data)
+
+    def __repr__(self):
+        return repr(self.data)
+
+    def __dict__(self):
+        return dict(self.data)
+
+    def __iter__(self):
+        yield from self.data
+
+    def items(self):
+        return self.data
+
+    def keys(self):
+        return [x[0] for x in self.data]
 
 
 if __name__ == "__main__":

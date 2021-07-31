@@ -1,5 +1,6 @@
 from psychopy import core, visual
-from haptic import Experiment, HapticDevice
+from psychopy.sound import Sound
+from haptic import Experiment, HapticDevice, Trial
 
 
 class ExampleExperiment(Experiment):
@@ -51,7 +52,7 @@ class ExampleExperiment(Experiment):
         self.invert_y_axis = True  # Set config variable
 
         self.calibrate()  # Defined in the parent class
-        self.run(2000, self.moveLoop)
+        self.run(2000, self.mainLoop)
         # Callback functions used in `run` calls should
         # generally be member functions as this allows
         # them to access the internal attributes and
@@ -76,19 +77,38 @@ class ExampleExperiment(Experiment):
         """`Experiment.__init__` looks for this method
         and will run its contents on initialization.
         """
+        def makeButtons():
+            buttonRet = {}
+            buttonImage = {
+                "north": "img/48px-PlayStation_button_T.png",
+                "south": "img/48px-PlayStation_button_X.png",
+                "east": "img/48px-PlayStation_button_C.png",
+                "west": "img/48px-PlayStation_button_S.png",
+            }
+            for k, v in buttonImage.items():
+                i = visual.ImageStim(
+                    self.window, v, name=k.rstrip(".png").replace("_", " ")
+                )
+                buttonRet[k] = i
+            buttonRet["east"].pos -= (0, 0.6)
+            buttonRet["south"].pos -= (0, 0.1)
+            buttonRet["west"].pos -= (0, 0.2)
+            return buttonRet
+
+        def makeAudio():
+            audioRet = {}
+            audioFiles = {
+                "one": "audio/speaker1.ogg",
+                "two": "audio/speaker2.ogg",
+                "three": "audio/speaker3.ogg"
+            }
+            for k, v in audioFiles.items():
+                i = Sound(v, name=k)
+                audioRet[k] = i
+            return audioRet
+
         cursor = visual.Circle(self.window, fillColor="blue", radius=0.01)
-        buttonImage = {
-            "north": "img/48px-PlayStation_button_T.png",
-            "south": "img/48px-PlayStation_button_X.png",
-            "east": "img/48px-PlayStation_button_C.png",
-            "west": "img/48px-PlayStation_button_S.png",
-        }
-        buttonRet = {}
-        for k, v in buttonImage.items():
-            i = visual.ImageStim(
-                self.window, v, name=k.rstrip(".png").replace("_", " ")
-            )
-            buttonRet[k] = i
+
         calibrateRumbleText = visual.TextStim(
             self.window,
             text="When you feel a vibration, please press\n\n\n\nOtherwise press",
@@ -98,12 +118,10 @@ class ExampleExperiment(Experiment):
             text="Please move the right stick in a circle, then release it and press",
         )
         calibrateStickText.pos += (0, 0.2)
-        buttonRet["east"].pos -= (0, 0.6)
-        buttonRet["south"].pos -= (0, 0.1)
-        buttonRet["west"].pos -= (0, 0.2)
         self.stims = {
             "cursor": cursor,
-            "buttons": buttonRet,
+            "buttons": makeButtons(),
+            "audio": makeAudio(),
             "calibrateRumbleText": calibrateRumbleText,
             "calibrateStickText": calibrateStickText,
         }
@@ -114,7 +132,7 @@ class ExampleExperiment(Experiment):
         """
         self.joystick = HapticDevice()
 
-    def moveLoop(self, frameN, *args, **kwargs):
+    def mainLoop(self, frameN, *args, **kwargs):
         """This is a callback used in the `__init__`
         method above.
 
